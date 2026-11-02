@@ -1,0 +1,67 @@
+%PDF-1.4
+%‚„œ”
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [3 0 R] /Count 1 >>
+endobj
+3 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 4 0 R >> >> /Contents 5 0 R >>
+endobj
+4 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+5 0 obj
+<< /Length 804 >>
+stream
+BT
+/F1 15 Tf
+50 790 Td
+(SECURELAB - SYNTHETIC DEMONSTRATION REPORT) Tj
+/F1 10 Tf
+0 -28 Td
+(ACADEMIC TEST DATA ONLY - NOT A REAL PATIENT RECORD) Tj
+0 -21 Td
+() Tj
+0 -21 Td
+(Patient: Demo Patient) Tj
+0 -21 Td
+(Patient ID: SL-DEMO-001) Tj
+0 -21 Td
+(Report date: 31 October 2026) Tj
+0 -21 Td
+(Test: Complete Blood Count \(CBC\)) Tj
+0 -21 Td
+() Tj
+0 -21 Td
+(Parameter                 Result       Reference \(illustrative\)) Tj
+0 -21 Td
+(Haemoglobin               14.2 g/dL    13.0 - 17.0 g/dL) Tj
+0 -21 Td
+(White blood cells         7.1 x10^9/L  4.0 - 11.0 x10^9/L) Tj
+0 -21 Td
+(Platelets                 245 x10^9/L  150 - 450 x10^9/L) Tj
+0 -21 Td
+() Tj
+0 -21 Td
+(This document contains fictional data for software testing.) Tj
+0 -21 Td
+(No diagnosis or clinical interpretation is provided.) Tj
+0 -21 Td
+ET
+endstream
+endobj
+xref
+0 6
+0000000000 65535 f 
+0000000015 00000 n 
+0000000064 00000 n 
+0000000121 00000 n 
+0000000247 00000 n 
+0000000317 00000 n 
+trailer
+<< /Size 6 /Root 1 0 R >>
+startxref
+1171
+%%EOF

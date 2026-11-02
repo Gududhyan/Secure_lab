@@ -1,0 +1,23 @@
+# Secrets and generated runtime data
+.env
+**/.env
+backend/instance/
+backend/app/instance/
+backend/.venv/
+.venv/
+
+# Frontend dependencies and builds
+frontend/node_modules/
+frontend/dist/
+
+# Python caches / test output
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.coverage
+
+# Editor / OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
