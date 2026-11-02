@@ -462,3 +462,13 @@ textarea:focus{border-color:var(--accent);box-shadow:0 0 0 4px var(--accent-ring
 .back-link:hover{text-decoration:underline}
 @media(prefers-reduced-motion:reduce){.auth-shell::before,.auth-shell::after{animation:none!important}.auth-shell::after{opacity:0}}
 @media(max-width:760px){.auth-shell::before,.auth-shell::after{background-position:20% center}}
+.paper-table{table-layout:fixed;width:100%}
+.paper-table th,.paper-table td{overflow-wrap:anywhere}
+.paper-table th:nth-child(1){width:30%}.paper-table th:nth-child(4){width:27%}
+.paper{overflow:hidden}
+.paper-table th,.paper-table td{overflow-wrap:normal;word-break:normal;padding:7px 4px}
+.paper-table th{font-size:9px;letter-spacing:.3px}
+.paper-table td{font-size:11.5px}
+.paper-table th:nth-child(1){width:27%}.paper-table th:nth-child(2){width:25%}.paper-table th:nth-child(3){width:22%}.paper-table th:nth-child(4){width:26%}
+.paper-table .flag{white-space:nowrap;font-size:9px;padding:2px 6px;letter-spacing:0}
+.paper{padding:16px 14px}
