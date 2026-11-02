@@ -200,3 +200,168 @@ html{scroll-behavior:smooth}
 .lp-report-card th:nth-child(4),.lp-report-card td:nth-child(4){width:24%}
 .lp-float-a{left:-28px;bottom:-4px}
 .lp-float-b{right:-18px;top:-16px}
+
+/* ================= Premium animations ================= */
+/* Scroll progress bar */
+.lp-progress{position:fixed;left:0;top:0;height:3px;width:100%;z-index:60;transform-origin:left;transform:scaleX(0);background:linear-gradient(90deg,#14c8c0,#5bd0e8,#8ff0e8);box-shadow:0 0 12px rgba(80,230,240,.7);will-change:transform;pointer-events:none}
+
+/* Hero entrance (staggered blur-in) */
+@keyframes lp-enter{from{opacity:0;transform:translateY(28px);filter:blur(10px)}to{opacity:1;transform:none;filter:none}}
+.lp-enter{opacity:0;animation:lp-enter .9s cubic-bezier(.2,.7,.2,1) forwards;animation-delay:var(--d,0ms)}
+@keyframes lp-enter-visual{from{opacity:0;transform:translateY(40px) scale(.94);filter:blur(12px)}to{opacity:1;transform:none;filter:none}}
+.lp-enter-visual{opacity:0;animation:lp-enter-visual 1.2s cubic-bezier(.2,.7,.2,1) .35s forwards}
+
+/* Hero background: slow zoom, drifting particles */
+.lp-hero{animation:lp-hero-pan 36s ease-in-out infinite alternate}
+@keyframes lp-hero-pan{from{background-position:center,35% 50%,center}to{background-position:center,65% 50%,center}}
+.lp-particles{position:absolute;inset:0 0 -520px 0;pointer-events:none;opacity:.9;will-change:transform;animation:lp-rise 38s linear infinite;
+  background-size:520px 520px;
+  background-image:
+    radial-gradient(circle at 12% 20%,rgba(150,250,255,.95) 0 2px,rgba(120,240,250,.25) 5px,transparent 9px),
+    radial-gradient(circle at 36% 68%,rgba(150,250,255,.8) 0 1.5px,rgba(120,240,250,.2) 4px,transparent 7px),
+    radial-gradient(circle at 62% 34%,rgba(190,255,255,.95) 0 2.6px,rgba(120,240,250,.25) 6px,transparent 10px),
+    radial-gradient(circle at 84% 78%,rgba(150,250,255,.8) 0 1.6px,rgba(120,240,250,.2) 4px,transparent 7px),
+    radial-gradient(circle at 92% 14%,rgba(150,250,255,.7) 0 1.2px,transparent 5px)}
+@keyframes lp-rise{from{transform:translate3d(0,0,0)}to{transform:translate3d(20px,-520px,0)}}
+.lp-hero-glow{transform:translate3d(calc(var(--px,0)*-24px),calc(var(--py,0)*-18px),0)}
+
+/* Rotating headline phrase (no layout shift: phrases overlap in one grid cell) */
+.lp-hero h1 .lp-rotator{display:inline-grid;font-style:normal;background:none;-webkit-background-clip:border-box;background-clip:border-box;color:inherit}
+.lp-rotator span{grid-area:1/1;white-space:nowrap;opacity:0;transform:translateY(60%);filter:blur(8px);transition:opacity .7s,transform .7s cubic-bezier(.2,.7,.2,1),filter .7s;
+  background:linear-gradient(90deg,#8ff0e8,#5bd0e8,#b4f5ee,#8ff0e8);background-size:200% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:lp-shimmer 6s linear infinite}
+.lp-rotator span.on{opacity:1;transform:none;filter:blur(0)}
+.lp-rotator span.out{transform:translateY(-60%)}
+@keyframes lp-shimmer{to{background-position:-200% 0}}
+@media(max-width:560px){.lp-rotator span{white-space:normal}}
+
+/* Hero card: cursor tilt + scan line; chips drift with the cursor */
+.lp-tilt{transform:perspective(1000px) rotateX(calc(var(--py,0)*-7deg)) rotateY(calc(var(--px,0)*9deg));transition:transform .25s ease-out;transform-style:preserve-3d;width:min(430px,100%)}
+.lp-report-card{position:relative;overflow:hidden;width:100%}
+.lp-scan{position:absolute;left:0;right:0;top:0;height:70px;pointer-events:none;background:linear-gradient(180deg,transparent,rgba(20,200,200,.16),transparent);animation:lp-scan 5.5s ease-in-out infinite}
+@keyframes lp-scan{0%{transform:translateY(-80px);opacity:0}15%,85%{opacity:1}100%{transform:translateY(420px);opacity:0}}
+.lp-float{translate:calc(var(--px,0)*18px) calc(var(--py,0)*12px);transition:translate .3s ease-out}
+.lp-float-b{translate:calc(var(--px,0)*-24px) calc(var(--py,0)*-14px)}
+.lp-flag.high{animation:lp-blink 2.2s ease-in-out infinite}
+@keyframes lp-blink{0%,100%{box-shadow:0 0 0 0 rgba(178,59,69,.4)}50%{box-shadow:0 0 0 6px rgba(178,59,69,0)}}
+
+/* Scroll hint */
+.lp-scroll-hint{position:absolute;left:50%;bottom:34px;width:26px;height:42px;margin-left:-13px;border:2px solid rgba(255,255,255,.5);border-radius:99px;z-index:2;opacity:0;animation:lp-enter 1s ease 1.4s forwards}
+.lp-scroll-hint span{position:absolute;left:50%;top:7px;width:4px;height:8px;margin-left:-2px;border-radius:4px;background:#8ff0e8;animation:lp-wheel 1.8s ease-in-out infinite}
+@keyframes lp-wheel{0%{transform:translateY(0);opacity:1}70%{transform:translateY(14px);opacity:0}100%{opacity:0}}
+
+/* Reveal variants */
+.reveal.from-left{transform:translateX(-46px)}.reveal.from-right{transform:translateX(46px)}.reveal.from-zoom{transform:scale(.92) translateY(18px)}
+.reveal.in-view{transform:none}
+.lp-section-head .lp-eyebrow{position:relative;padding-bottom:12px}
+.lp-section-head .lp-eyebrow:after{content:'';position:absolute;left:50%;bottom:0;height:2px;width:0;border-radius:2px;background:linear-gradient(90deg,transparent,var(--teal),transparent);transform:translateX(-50%);transition:width 1s cubic-bezier(.2,.7,.2,1) .3s}
+.lp-section-head.in-view .lp-eyebrow:after{width:90px}
+
+/* Marquee */
+.lp-marquee{flex:1;min-width:0;overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
+.lp-marquee-track{display:flex;gap:10px;width:max-content;animation:lp-marquee 26s linear infinite}
+.lp-marquee:hover .lp-marquee-track{animation-play-state:paused}
+@keyframes lp-marquee{to{transform:translateX(calc(-50% - 5px))}}
+.lp-trust-inner{flex-wrap:nowrap}.lp-trust-inner>span{white-space:nowrap}
+@media(max-width:760px){.lp-trust-inner{flex-direction:column;align-items:flex-start}.lp-marquee{width:100%}}
+
+/* Cards: spotlight, icon motion */
+.lp-feature,.lp-role{position:relative;overflow:hidden}
+.lp-feature:before,.lp-role:after{content:'';position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity .3s;background:radial-gradient(340px circle at var(--mx,50%) var(--my,50%),rgba(15,139,141,.14),transparent 65%)}
+.lp-role:after{background:radial-gradient(340px circle at var(--mx,50%) var(--my,50%),color-mix(in srgb,var(--accent) 16%,transparent),transparent 65%)}
+.lp-feature:hover:before,.lp-role:hover:after{opacity:1}
+.lp-feature .lp-icon,.lp-role .lp-icon,.lp-step .lp-icon{transition:transform .4s cubic-bezier(.3,1.6,.5,1),box-shadow .3s,background .3s}
+.lp-feature:hover .lp-icon{transform:translateY(-4px) rotate(-8deg) scale(1.08);box-shadow:0 12px 24px rgba(15,139,141,.25),inset 0 0 0 1px rgba(15,139,141,.3)}
+.lp-role:hover .lp-icon{transform:translateY(-4px) scale(1.1)}
+.lp-role:before{transform:scaleX(0);transform-origin:left;transition:transform .8s cubic-bezier(.2,.7,.2,1) .35s}
+.lp-role.in-view:before{transform:scaleX(1)}
+
+.reveal.in-view.lp-feature:hover,.reveal.in-view.lp-role:hover{transform:translateY(-6px)}
+.reveal.settled{transition-delay:0ms!important}
+.lp-feature.settled,.lp-role.settled{transition:transform .3s cubic-bezier(.2,.7,.2,1),box-shadow .25s,border-color .25s}
+
+/* Steps: number glow-in + icon pop */
+.lp-step-num{background:linear-gradient(135deg,#14a3a5,#5bd0e8);-webkit-background-clip:text;background-clip:text;color:rgba(15,139,141,.2);transition:color .8s ease .4s}
+.lp-step.in-view .lp-step-num{color:transparent}
+.lp-step .lp-icon{transform:scale(.6) rotate(-20deg);opacity:0;transition:transform .7s cubic-bezier(.3,1.6,.5,1) .5s,opacity .5s ease .5s}
+.lp-step.in-view .lp-icon{transform:none;opacity:1}
+.lp-step{transition:opacity .7s cubic-bezier(.2,.7,.2,1),transform .35s cubic-bezier(.2,.7,.2,1),box-shadow .3s}
+.lp-step.in-view:hover{transform:translateY(-6px);box-shadow:0 22px 46px rgba(18,48,61,.12)}
+
+/* Stats band */
+.lp-stats{padding:20px 0 80px}
+.lp-stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.lp-stat{text-align:center;padding:30px 18px;border-radius:22px;background:linear-gradient(160deg,#fff,#f1f9f9);border:1px solid var(--line);box-shadow:0 10px 30px rgba(18,48,61,.05)}
+.lp-stat strong{display:block;font:800 clamp(34px,4vw,50px)/1.05 Manrope,sans-serif;letter-spacing:-1.5px;background:linear-gradient(135deg,#0b6f72,#2bbfc4);-webkit-background-clip:text;background-clip:text;color:transparent;font-variant-numeric:tabular-nums}
+.lp-stat>span{display:block;margin-top:10px;color:var(--muted);font-size:14.5px;line-height:1.5}
+@media(max-width:1000px){.lp-stats-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:520px){.lp-stats-grid{grid-template-columns:1fr}}
+
+/* Security flow: nodes light up in sequence, current travels down the line */
+.lp-flow>div{opacity:.75;animation:lp-node 8s ease-in-out infinite}
+.lp-flow>div:nth-of-type(2){animation-delay:2s}.lp-flow>div:nth-of-type(3){animation-delay:4s}.lp-flow>div:nth-of-type(4){animation-delay:6s}
+@keyframes lp-node{0%,22%,100%{opacity:.7;border-color:rgba(255,255,255,.14);background:rgba(255,255,255,.1);box-shadow:none}8%,16%{opacity:1;border-color:rgba(111,230,207,.7);background:rgba(95,224,192,.2);box-shadow:0 0 28px rgba(95,224,192,.3)}}
+.lp-flow>i{position:relative;overflow:hidden;background:rgba(255,255,255,.15);animation:none}
+.lp-flow>i:after{content:'';position:absolute;left:0;right:0;top:-100%;height:100%;background:linear-gradient(180deg,transparent,#6fe6cf,transparent);animation:lp-drip 2s ease-in-out infinite}
+@keyframes lp-drip{to{top:100%}}
+
+/* CTA: moving aurora + sheen */
+.lp-cta-inner{position:relative;overflow:hidden;background-size:140% 140%;animation:lp-aurora 14s ease-in-out infinite alternate}
+.lp-cta-inner:before{content:'';position:absolute;width:520px;height:520px;left:-120px;top:-260px;border-radius:50%;background:radial-gradient(circle,rgba(110,240,240,.35),transparent 65%);animation:lp-orb 12s ease-in-out infinite alternate;pointer-events:none}
+.lp-cta-inner>*{position:relative}
+@keyframes lp-aurora{from{background-position:0% 0%}to{background-position:100% 100%}}
+@keyframes lp-orb{to{transform:translate3d(560px,120px,0) scale(1.2)}}
+
+/* ================= Micro-interactions ================= */
+.lp-btn{position:relative;overflow:hidden}
+.lp-btn:active{transform:translateY(0) scale(.97)}
+.lp-btn svg{transition:transform .25s cubic-bezier(.2,.7,.2,1)}
+.lp-btn:hover svg{transform:translateX(4px)}
+.lp-btn-primary:after{content:'';position:absolute;top:0;bottom:0;left:-60%;width:40%;transform:skewX(-20deg);background:linear-gradient(90deg,transparent,rgba(255,255,255,.45),transparent);transition:left .6s ease}
+.lp-btn-primary:hover:after{left:130%}
+.lp-btn-lg.lp-btn-primary{animation:lp-glow-btn 3.2s ease-in-out infinite}
+@keyframes lp-glow-btn{0%,100%{box-shadow:0 8px 22px rgba(15,139,141,.35)}50%{box-shadow:0 8px 34px rgba(40,210,210,.6)}}
+.lp-ripple{position:absolute;border-radius:50%;background:rgba(255,255,255,.4);transform:scale(0);animation:lp-ripple .7s ease-out forwards;pointer-events:none}
+@keyframes lp-ripple{to{transform:scale(1);opacity:0}}
+
+.lp-links>a{position:relative}
+.lp-links>a:after{content:'';position:absolute;left:14px;right:14px;bottom:5px;height:2px;border-radius:2px;background:currentColor;transform:scaleX(0);transform-origin:right;transition:transform .3s cubic-bezier(.2,.7,.2,1)}
+.lp-links>a:hover:after{transform:scaleX(1);transform-origin:left}
+.lp-brand-mark{transition:transform .5s cubic-bezier(.3,1.6,.5,1)}
+.lp-brand:hover .lp-brand-mark{transform:rotate(-12deg) scale(1.1)}
+.lp-nav{transition:background .25s,box-shadow .25s,backdrop-filter .25s,transform .3s}
+
+.lp-hero-points svg,.lp-checks svg,.lp-role li svg{transition:transform .3s cubic-bezier(.3,1.6,.5,1)}
+.lp-hero-points li:hover svg,.lp-checks li:hover svg,.lp-role li:hover svg{transform:scale(1.35) rotate(-8deg)}
+.lp-role.in-view li svg,.lp-security-copy.in-view .lp-checks svg{animation:lp-tick .5s cubic-bezier(.3,1.6,.5,1) both}
+.lp-role.in-view li:nth-child(1) svg,.lp-security-copy.in-view .lp-checks li:nth-child(1) svg{animation-delay:.6s}
+.lp-role.in-view li:nth-child(2) svg,.lp-security-copy.in-view .lp-checks li:nth-child(2) svg{animation-delay:.75s}
+.lp-role.in-view li:nth-child(3) svg,.lp-security-copy.in-view .lp-checks li:nth-child(3) svg{animation-delay:.9s}
+@keyframes lp-tick{from{transform:scale(0) rotate(-60deg);opacity:0}to{transform:none;opacity:1}}
+
+.lp-trust-inner li{transition:transform .2s,background .2s,color .2s}
+.lp-trust-inner li:hover{transform:translateY(-3px);background:var(--teal);color:#fff}
+.lp-faq details{transition:box-shadow .25s,border-color .25s,transform .25s}
+.lp-faq details:hover{transform:translateX(4px);border-color:rgba(15,139,141,.25)}
+.lp-faq details[open] p{animation:lp-faq .45s cubic-bezier(.2,.7,.2,1)}
+@keyframes lp-faq{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
+.lp-stat{transition:transform .3s cubic-bezier(.2,.7,.2,1),box-shadow .3s}
+.lp-stat.in-view:hover{transform:translateY(-6px);box-shadow:0 22px 46px rgba(18,48,61,.1)}
+
+/* Back to top */
+.lp-top{position:fixed;right:22px;bottom:22px;z-index:40;width:48px;height:48px;border-radius:50%;border:0;display:grid;place-items:center;color:#fff;cursor:pointer;background:linear-gradient(180deg,#14a3a5,#0b7a7d);box-shadow:0 10px 26px rgba(15,139,141,.45);opacity:0;transform:translateY(20px) scale(.7);pointer-events:none;transition:opacity .3s,transform .3s cubic-bezier(.3,1.6,.5,1)}
+.lp-top.show{opacity:1;transform:none;pointer-events:auto}
+.lp-top:hover{transform:translateY(-4px) scale(1.06)}
+.lp-top:hover svg{animation:lp-bob .8s ease-in-out infinite}
+@keyframes lp-bob{50%{transform:translateY(-4px)}}
+
+@media(max-width:1000px){.lp-tilt{transform:none!important}.lp-float{translate:none!important}.lp-scroll-hint{display:none}}
+@media(prefers-reduced-motion:reduce){
+  .lp-enter,.lp-enter-visual,.lp-scroll-hint{opacity:1;filter:none;transform:none}
+  .lp-progress{transition:none}
+  .lp-rotator span:not(:first-child){display:none}
+  .lp-rotator span:first-child{opacity:1;transform:none;filter:none}
+  .lp-tilt,.lp-float{transform:none!important;translate:none!important}
+  .lp-marquee-track{animation:none!important;flex-wrap:wrap;width:auto}
+  .lp-step .lp-icon{opacity:1;transform:none}
+  .lp-step-num{color:transparent}
+}
