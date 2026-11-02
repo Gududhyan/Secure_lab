@@ -23,6 +23,17 @@ def create_app(test_config=None):
     Path(app.config["REPORT_STORAGE_DIR"]).mkdir(parents=True, exist_ok=True)
     db.init_app(app)
     jwt.init_app(app)
+
+    @jwt.token_in_blocklist_loader
+    def deactivated_user_blocked(_header, payload):
+        # A deactivated account loses access immediately, even with a still-valid token.
+        from .models import User
+        user = User.query.filter_by(public_id=payload.get("sub")).first()
+        return user is None or not user.is_active
+
+    @jwt.revoked_token_loader
+    def revoked_response(_header, _payload):
+        return jsonify(error="Your account is no longer active. Please sign in again."), 401
     limiter.init_app(app)
     CORS(app, resources={r"/api/*": {"origins": app.config["FRONTEND_ORIGIN"]}}, allow_headers=["Content-Type", "Authorization"])
 

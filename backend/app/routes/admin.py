@@ -12,6 +12,10 @@ bp = Blueprint("admin", __name__, url_prefix="/api/admin")
 EMAIL_RE = re.compile(r"^[^\s@]+@[^\s@]+\.[^\s@]+$")
 
 
+def user_dict(user):
+    return user.to_dict() | {"is_active": user.is_active, "created_at": user.created_at.isoformat() if user.created_at else None}
+
+
 def require_admin():
     user = User.query.filter_by(public_id=get_jwt_identity()).first()
     return user if user and user.role == "admin" else None
@@ -23,6 +27,7 @@ def overview():
     if not require_admin():
         return jsonify(error="Administrator access required."), 403
     return jsonify(
+        active_users=User.query.filter_by(is_active=True).count(),
         patients=User.query.filter_by(role="patient").count(),
         laboratory_staff=User.query.filter_by(role="lab").count(),
         reports=Report.query.count(),
@@ -72,5 +77,31 @@ def audit_logs():
 def users():
     if not require_admin():
         return jsonify(error="Administrator access required."), 403
-    all_users = User.query.order_by(User.created_at.desc()).limit(300).all()
-    return jsonify(users=[u.to_dict() for u in all_users])
+    query = User.query
+    role = request.args.get("role", "")
+    if role in ("patient", "lab", "admin"):
+        query = query.filter_by(role=role)
+    term = request.args.get("search", "").strip()
+    if term:
+        like = f"%{term}%"
+        query = query.filter(db.or_(User.name.ilike(like), User.email.ilike(like), User.patient_code.ilike(like)))
+    all_users = query.order_by(User.created_at.desc()).limit(300).all()
+    return jsonify(users=[user_dict(u) for u in all_users])
+
+
+@bp.patch("/users/<user_id>/active")
+@jwt_required()
+def set_user_active(user_id):
+    admin = require_admin()
+    if not admin:
+        return jsonify(error="Administrator access required."), 403
+    target = User.query.filter_by(public_id=user_id).first()
+    if not target:
+        return jsonify(error="User not found."), 404
+    if target.id == admin.id:
+        return jsonify(error="You cannot deactivate your own account."), 400
+    active = bool((request.get_json(silent=True) or {}).get("active"))
+    target.is_active = active
+    db.session.commit()
+    record_audit("USER_ACTIVATED" if active else "USER_DEACTIVATED", f"{target.role} account: {target.email}")
+    return jsonify(user=user_dict(target))

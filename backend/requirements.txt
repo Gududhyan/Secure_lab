@@ -7,3 +7,4 @@ cryptography==46.0.3
 python-dotenv==1.1.1
 psycopg[binary]==3.2.12
 pyotp==2.9.0
+reportlab==5.1.0

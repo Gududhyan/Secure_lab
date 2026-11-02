@@ -15,3 +15,10 @@ def save_ciphertext(storage_dir: str, report_id: str, ciphertext: bytes) -> str:
 
 def read_ciphertext(path: str) -> bytes:
     return Path(path).read_bytes()
+
+
+def delete_ciphertext(path: str) -> None:
+    try:
+        Path(path).unlink()
+    except FileNotFoundError:
+        pass

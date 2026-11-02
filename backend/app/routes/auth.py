@@ -7,7 +7,7 @@ from sqlalchemy.exc import IntegrityError
 import pyotp
 
 from ..extensions import db, limiter
-from ..models import User
+from ..models import AuditLog, User
 from ..services.audit import record_audit
 
 bp = Blueprint("auth", __name__, url_prefix="/api/auth")
@@ -106,3 +106,36 @@ def me():
     if not user or not user.is_active:
         return jsonify(error="Account not available."), 401
     return jsonify(user=user.to_dict())
+
+
+@bp.post("/change-password")
+@jwt_required()
+@limiter.limit("5 per minute")
+def change_password():
+    user = User.query.filter_by(public_id=get_jwt_identity()).first()
+    data = request.get_json(silent=True) or {}
+    current, new = data.get("current_password", ""), data.get("new_password", "")
+    if not user:
+        return jsonify(error="User not found."), 404
+    if not isinstance(current, str) or not user.check_password(current):
+        record_audit("PASSWORD_CHANGE_FAILED", "Incorrect current password", actor_user=user)
+        return jsonify(error="Your current password is incorrect."), 403
+    minimum = 10 if user.role == "patient" else 12
+    if not valid_password(new) or len(new) < minimum:
+        return jsonify(error=f"New password must be at least {minimum} characters and contain letters and numbers."), 400
+    if new == current:
+        return jsonify(error="Choose a password different from your current one."), 400
+    user.set_password(new)
+    db.session.commit()
+    record_audit("PASSWORD_CHANGED", "User changed their own password", actor_user=user)
+    return jsonify(message="Password updated successfully.")
+
+
+@bp.get("/activity")
+@jwt_required()
+def my_activity():
+    user = User.query.filter_by(public_id=get_jwt_identity()).first()
+    if not user:
+        return jsonify(error="User not found."), 404
+    entries = AuditLog.query.filter_by(actor_id=user.id).order_by(AuditLog.created_at.desc()).limit(15).all()
+    return jsonify(activity=[e.to_dict() for e in entries])
